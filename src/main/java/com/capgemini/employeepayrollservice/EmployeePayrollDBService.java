@@ -198,7 +198,7 @@ public class EmployeePayrollDBService {
 		}
 		return genderToSalarySum;
 	}
-	public EmployeePayrollData addEmployeeToPayroll(String name, double salary, LocalDate startDate, String gender, int company_id,int[] departments) throws EmployeePayrollException {
+	public synchronized EmployeePayrollData addEmployeeToPayroll(String name, double salary, LocalDate startDate, String gender, int company_id,int[] departments) throws EmployeePayrollException {
 		int employeeId=-1;
 		EmployeePayrollData employeePayrollData=null;
 		Connection connection=null;
