@@ -18,7 +18,7 @@ public class EmployeePayrollServiceTest {
 	@Test
 	public void given6Employee_WhenAddedDatabase_ShouldMatchEntries() throws EmployeePayrollException {
 		EmployeePayrollData[] arrayEmps={
-			new EmployeePayrollData(91,"Ranii",100000.0,LocalDate.now(),'F'),
+			new EmployeePayrollData(91,"Rani",100070.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(92,"Ruchi",200000.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(93,"Indu",700000.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(94,"Suraj",900000.0,LocalDate.now(),'M'),
