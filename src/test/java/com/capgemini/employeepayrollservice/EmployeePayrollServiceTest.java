@@ -14,7 +14,7 @@ import com.capgemini.employeepayrollservice.model.EmployeePayrollData;
 
 public class EmployeePayrollServiceTest {
 	
-	//UC1 Multithreading..
+	//UC1 Multithreading......
 	@Test
 	public void given6Employee_WhenAddedDatabase_ShouldMatchEntries() throws EmployeePayrollException {
 		EmployeePayrollData[] arrayEmps={
