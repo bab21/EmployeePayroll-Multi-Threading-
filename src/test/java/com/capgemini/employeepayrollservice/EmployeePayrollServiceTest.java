@@ -14,11 +14,11 @@ import com.capgemini.employeepayrollservice.model.EmployeePayrollData;
 
 public class EmployeePayrollServiceTest {
 	
-	//UC1 Multithreading......
+	//UC3 Multithreading......
 	@Test
 	public void given6Employee_WhenAddedDatabase_ShouldMatchEntries() throws EmployeePayrollException {
 		EmployeePayrollData[] arrayEmps={
-			new EmployeePayrollData(91,"Rani",100000.0,LocalDate.now(),'F'),
+			new EmployeePayrollData(91,"Ranii",100000.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(92,"Ruchi",200000.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(93,"Indu",700000.0,LocalDate.now(),'F'),
 			new EmployeePayrollData(94,"Suraj",900000.0,LocalDate.now(),'M'),
@@ -33,7 +33,7 @@ public class EmployeePayrollServiceTest {
 		employeePayrollService.addEmployeeToPayrollWithThread(Arrays.asList(arrayEmps));
 		Instant end=Instant.now();
 		System.out.println("Duration with thread"+Duration.between(start, end));
-		assertEquals(9,employeePayrollService.countNumberOfEmployees(IOService.REST_IO));
+		assertEquals(10,employeePayrollService.countNumberOfEmployees(IOService.REST_IO));
 	}
 //	//UC2 Database..
 //	@Test

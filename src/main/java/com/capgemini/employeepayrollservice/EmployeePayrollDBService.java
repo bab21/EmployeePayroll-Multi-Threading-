@@ -18,6 +18,7 @@ import java.util.Map;
 import com.capgemini.employeepayrollservice.model.EmployeePayrollData;
 
 public class EmployeePayrollDBService {
+	private int connectionCounter=0;
 	private PreparedStatement employeePayrollDataStatement;
 	private static EmployeePayrollDBService empployeePayrollDBService=null;
 	
@@ -73,16 +74,21 @@ public class EmployeePayrollDBService {
 			throw new EmployeePayrollException("unable to create prepared statement");
 		}
 	}
-	private Connection getConnection() throws SQLException{
+	private synchronized Connection getConnection() throws SQLException{
 		listDrivers();
+		connectionCounter++;
 		String jdbcURL="jdbc:mysql://localhost:3306/payroll_service?allowPublicKeyRetrieval=true&useSSL=false";
 		String userName="root";
 		String password="nancy21@Bab";
 		Connection connection;
-	    System.out.println("Connecting to database:"+jdbcURL);
+		System.out.println("Processing Thread: "+Thread.currentThread().getName()+
+				"Connecting to database with id:"+connectionCounter);
+		
+//	    System.out.println("Connecting to database:"+jdbcURL);
 	    
 		connection=DriverManager.getConnection(jdbcURL,userName,password);
-		System.out.println("Connection is successful!!!!"+connection);
+		System.out.println("Processing Thread : "+Thread.currentThread().getName()+
+				"Id: "+connectionCounter+"Connection is successfull!!!!"+connection);
 		return connection;
 	}
 	private static void listDrivers() {
