@@ -134,5 +134,22 @@ public class EmployeePayrollService {
 		}
 		System.out.println(this.employeePayrollList);
 	}
+	public void updateEmployeeSalaryWithThread(Map<String, Double> mapOfEmpSalary) {
+		// TODO Auto-generated method stub
+		mapOfEmpSalary.forEach((name,salary)->{
+			System.out.println("Employee Being Added"+name);
+			Runnable task=()->{
+				try {
+					this.updateEmployeeSalary(name, salary);
+				} catch (EmployeePayrollException e) {
+					e.printStackTrace();
+				}
+			};
+			Thread thread=new Thread(task,name);
+			thread.start();
+			
+		});
+		
+	}
 	
 }

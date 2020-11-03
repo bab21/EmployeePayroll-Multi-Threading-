@@ -61,18 +61,60 @@ public class EmployeePayrollDBService {
 			throw new EmployeePayrollException("unable to connect to database");
 		}
 	}
-	private int updateEmployeeDataUsingPreparedStatement(String name,double salary) throws EmployeePayrollException{
+	private synchronized int updateEmployeeDataUsingPreparedStatement(String name,double salary) throws EmployeePayrollException{
+		int employeeId=-1;
+		System.out.println("prepare statement method called");
+		Connection connection=null;
 		try {
-			Connection connection=this.getConnection();
+			connection = this.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try (Statement statement=connection.createStatement()){
+			
 			String sql=String.format("UPDATE employee_payroll SET salary=%.2f WHERE name='%s' ;", salary, name);
 			
-			PreparedStatement preparedStatement=connection.prepareStatement(sql);			
-			return preparedStatement.executeUpdate(sql);
+//			PreparedStatement preparedStatement=connection.prepareStatement(sql);			
+			int rowsAffected=statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			
+			System.out.println("Number of rows affected"+rowsAffected);
+			if(rowsAffected==1) {
+				ResultSet resultSet=statement.getGeneratedKeys();
+				System.out.println("print result set"+resultSet);
+//				if(resultSet.next())
+//				System.out.println("returned value"+resultSet.getInt(1));
+//				employeeId=resultSet.getInt(1);
+				
+			}
+			System.out.println("employeeId for update :"+employeeId);
+			updatePayrollDetails(name,salary);
+			
+			return rowsAffected;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 			throw new EmployeePayrollException("unable to create prepared statement");
 		}
+		
+	}
+	private synchronized  void updatePayrollDetails(String name, double salary) {
+		double deductions=salary*0.2;
+		double taxablePay=salary-deductions;
+		double tax=taxablePay*0.1;
+		double netPay=salary-tax;
+		String sql=String.format("update payroll_details "
+				+ "set basicPay=%.2f,deductions=%.2f,taxablePay=%.2f,tax=%.2f,netPay=%.2f "
+				+ "where id=(SELECT id FROM employee_payroll WHERE name='%s') ",salary,deductions,taxablePay,tax,netPay,name);
+		try(Connection connection=this.getConnection()){
+			Statement statement=connection.createStatement();
+			int rowsAffected=statement.executeUpdate(sql);
+			System.out.println("update"+rowsAffected);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	private synchronized Connection getConnection() throws SQLException{
 		listDrivers();

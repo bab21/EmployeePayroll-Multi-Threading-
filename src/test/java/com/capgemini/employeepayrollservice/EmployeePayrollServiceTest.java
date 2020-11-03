@@ -15,26 +15,7 @@ import com.capgemini.employeepayrollservice.model.EmployeePayrollData;
 public class EmployeePayrollServiceTest {
 	
 	//UC3 Multithreading......
-	@Test
-	public void given6Employee_WhenAddedDatabase_ShouldMatchEntries() throws EmployeePayrollException {
-		EmployeePayrollData[] arrayEmps={
-			new EmployeePayrollData(91,"Rani",100070.0,LocalDate.now(),'F'),
-			new EmployeePayrollData(92,"Ruchi",200000.0,LocalDate.now(),'F'),
-			new EmployeePayrollData(93,"Indu",700000.0,LocalDate.now(),'F'),
-			new EmployeePayrollData(94,"Suraj",900000.0,LocalDate.now(),'M'),
-			new EmployeePayrollData(95,"Prabhat",800000.0,LocalDate.now(),'M'),
-			new EmployeePayrollData(96,"Yash",500000.0,LocalDate.now(),'M'),
-			
-		};
-		EmployeePayrollService employeePayrollService=new EmployeePayrollService();
-		employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
-		Instant start=Instant.now();
-		
-		employeePayrollService.addEmployeeToPayrollWithThread(Arrays.asList(arrayEmps));
-		Instant end=Instant.now();
-		System.out.println("Duration with thread"+Duration.between(start, end));
-		assertEquals(10,employeePayrollService.countNumberOfEmployees(IOService.REST_IO));
-	}
+//	
 //	//UC2 Database..
 //	@Test
 //	public void givenEmployeePayrollDB_WhenRetrieved_ShouldMatchEmployeeCount() throws EmployeePayrollException {
@@ -44,15 +25,22 @@ public class EmployeePayrollServiceTest {
 //		assertEquals(3,employeePayrollDataList.size());
 //	}
 //	//UC3 Database...
-//	@Test
-//	public void givenNewSalaryForEmployee_WhenUpdated_ShouldSyncWithDB() throws EmployeePayrollException {
-//		EmployeePayrollService employeePayrollService=new EmployeePayrollService();
-//		List<EmployeePayrollData> employeePayrollDataList=employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
-//		employeePayrollService.updateEmployeeSalary("Terisa",300000.00);
-//		boolean result=employeePayrollService.checkEmployeePayrollInSyncWithDB("Terisa");
-//		assertTrue(result);
-//		
-//	}
+	@Test
+	public void givenNewSalaryForMutipleEmployee_WhenUpdated_ShouldSyncWithDB() throws EmployeePayrollException {
+		EmployeePayrollService employeePayrollService=new EmployeePayrollService();
+		List<EmployeePayrollData> employeePayrollDataList=employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
+		Map<String,Double> mapOfEmpSalary=new HashMap<>();
+		mapOfEmpSalary.put("Yash",400.0);
+		mapOfEmpSalary.put("Prabhat",400.0);
+		
+		Instant start=Instant.now();
+		employeePayrollService.updateEmployeeSalaryWithThread(mapOfEmpSalary);
+		Instant end=Instant.now();
+		System.out.println("Time for updation"+Duration.between(start, end));
+		boolean result=employeePayrollService.checkEmployeePayrollInSyncWithDB("Terisa");
+		assertTrue(result);
+		
+	}
 //	
 //	//UC5....
 //	@Test
