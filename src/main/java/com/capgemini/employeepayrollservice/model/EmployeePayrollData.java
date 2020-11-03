@@ -2,6 +2,7 @@ package com.capgemini.employeepayrollservice.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class EmployeePayrollData {
 	public int id;
@@ -31,6 +32,10 @@ public class EmployeePayrollData {
 		return id+","+name+","+salary+","+start+","+gender+","+company+","+departmentList;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(name,gender,salary,start);
+	}
 	@Override
 	public boolean equals(Object o) {
 		if(this==o) return true;
